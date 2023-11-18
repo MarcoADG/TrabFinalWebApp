@@ -10,7 +10,7 @@ export default function Lista() {
   const getJogos = async () => {
     try {
       const { data } = await axios.get(url);
-
+      console.log(data);
       setJogos(data);
     } catch (error) {}
   };
@@ -18,6 +18,11 @@ export default function Lista() {
   useEffect(() => {
     getJogos();
   }, []);
+
+  // const item = ({item}) => (<View style={styles.item}><Image
+  //           source={{data.imagem}}
+  //           style={{ width: 50, height: 50 }}
+  //         /></View>)
   return (
     <View style={styles.container}>
       <Text>Lista</Text>
