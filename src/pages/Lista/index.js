@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import axios from "axios";
+import Jogo from "../Jogo"; // Importe a página Jogo
 import logo from "../../../assets/logo.png";
 
 const windowWidth = Dimensions.get("window").width;
@@ -16,6 +17,8 @@ const windowWidth = Dimensions.get("window").width;
 export default function Lista() {
   const url = "https://6542c2c301b5e279de1f8b80.mockapi.io/jogos";
   const [jogos, setJogos] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedJogo, setSelectedJogo] = useState(null);
 
   const getJogos = async () => {
     try {
@@ -30,9 +33,18 @@ export default function Lista() {
     getJogos();
   }, []);
 
+  const openModal = (jogo) => {
+    setSelectedJogo(jogo);
+    setModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setModalVisible(false);
+  };
+
   const renderItem = ({ item }) => (
     <View style={styles.item}>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => openModal(item)}>
         <Image source={{ uri: item.imagem }} style={styles.itemImage} />
       </TouchableOpacity>
     </View>
@@ -45,7 +57,13 @@ export default function Lista() {
         data={jogos}
         keyExtractor={(item) => item.id.toString()}
         renderItem={renderItem}
-        numColumns={2} // Definindo duas colunas
+        numColumns={2}
+      />
+
+      <Jogo
+        jogo={selectedJogo}
+        visible={modalVisible}
+        closeModal={closeModal}
       />
     </View>
   );
@@ -55,7 +73,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#1F1F24",
-
     alignItems: "center",
   },
   header: {

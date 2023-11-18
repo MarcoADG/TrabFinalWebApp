@@ -6,6 +6,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import Jogo from "./src/pages/Jogo";
 import Lista from "./src/pages/Lista";
 import Sobre from "./src/pages/Sobre";
+import { StyleSheet } from "react-native";
 
 const Tab = createBottomTabNavigator();
 
