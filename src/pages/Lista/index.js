@@ -11,6 +11,7 @@ import {
 import axios from "axios";
 import Jogo from "../Jogo"; // Importe a página Jogo
 import logo from "../../../assets/logo.png";
+import Feather from "react-native-vector-icons/Feather";
 
 const windowWidth = Dimensions.get("window").width;
 
@@ -53,6 +54,9 @@ export default function Lista() {
   return (
     <View style={styles.container}>
       <Image source={logo} style={styles.header} />
+      <TouchableOpacity onPress={getJogos}>
+        <Feather name="refresh-ccw" color={"white"} size={30} />
+      </TouchableOpacity>
       <FlatList
         data={jogos}
         keyExtractor={(item) => item.id.toString()}
@@ -76,7 +80,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   header: {
-    width: 100,
+    width: 150,
     height: 100,
   },
   item: {

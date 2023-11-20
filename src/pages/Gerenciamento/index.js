@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import axios from "axios";
-import Jogo from "../Jogo";
+import logo from "../../../assets/logo.png";
 
 export default function Gerenciamento() {
   const [jogos, setJogos] = useState([]);
@@ -27,6 +27,7 @@ export default function Gerenciamento() {
     preco: 0,
     avaliacao: 0,
   });
+  const [formErrors, setFormErrors] = useState({});
 
   useEffect(() => {
     loadJogos();
@@ -61,11 +62,13 @@ export default function Gerenciamento() {
       setSelectedJogo(jogo);
       setEditedJogo(jogo);
     }
+    setFormErrors({});
     setModalVisible(true);
   };
 
   const closeModal = () => {
     setSelectedJogo(null);
+    setFormErrors({});
     setModalVisible(false);
     loadJogos();
   };
@@ -84,6 +87,12 @@ export default function Gerenciamento() {
 
   const saveChanges = async () => {
     try {
+      const errors = validateForm();
+
+      if (Object.keys(errors).length > 0) {
+        setFormErrors(errors);
+        return;
+      }
       if (editedJogo.id) {
         await axios.put(
           `https://6542c2c301b5e279de1f8b80.mockapi.io/jogos/${editedJogo.id}`,
@@ -100,6 +109,26 @@ export default function Gerenciamento() {
     } catch (error) {
       console.error("Erro ao salvar alterações:", error);
     }
+  };
+
+  const validateForm = () => {
+    const errors = {};
+    if (!editedJogo.titulo || editedJogo.titulo.trim() === "") {
+      errors.titulo = "Título é obrigatório";
+    }
+    if (!editedJogo.categoria || editedJogo.categoria.trim() === "") {
+      errors.categoria = "Categoria é obrigatória";
+    }
+    if (!editedJogo.descricao || editedJogo.descricao.trim() === "") {
+      errors.descricao = "Descrição é obrigatória";
+    }
+    if (isNaN(parseFloat(editedJogo.preco))) {
+      errors.preco = "Preço inválido";
+    }
+    if (isNaN(parseFloat(editedJogo.avaliacao))) {
+      errors.avaliacao = "Avaliação inválida";
+    }
+    return errors;
   };
 
   const renderItem = ({ item }) => {
@@ -147,13 +176,13 @@ export default function Gerenciamento() {
   const handleInputChange = (field, value) => {
     setEditedJogo((prevJogo) => ({
       ...prevJogo,
-      [field]: value,
+      [field]: isNaN(value) ? "" : value,
     }));
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Lista de Jogos</Text>
+      <Image source={logo} style={styles.header} />
       <FlatList
         data={jogos}
         keyExtractor={(item) => item.id.toString()}
@@ -168,48 +197,65 @@ export default function Gerenciamento() {
       >
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
+            <Text style={styles.modelText}>Titulo</Text>
             <TextInput
               style={styles.input}
               placeholder="Título"
               value={editedJogo.titulo}
               onChangeText={(text) => handleInputChange("titulo", text)}
             />
+            {formErrors.titulo && (
+              <Text style={styles.errorText}>{formErrors.titulo}</Text>
+            )}
+            <Text style={styles.modelText}>Categoria</Text>
             <TextInput
               style={styles.input}
               placeholder="Categoria"
               value={editedJogo.categoria}
               onChangeText={(text) => handleInputChange("categoria", text)}
             />
+            {formErrors.categoria && (
+              <Text style={styles.errorText}>{formErrors.categoria}</Text>
+            )}
+            <Text style={styles.modelText}>link Imagem</Text>
             <TextInput
               style={styles.input}
               placeholder="Imagem (URL)"
               value={editedJogo.imagem}
               onChangeText={(text) => handleInputChange("imagem", text)}
             />
+            <Text style={styles.modelText}>Descrição</Text>
             <TextInput
               style={styles.input}
               placeholder="Descrição"
               value={editedJogo.descricao}
               onChangeText={(text) => handleInputChange("descricao", text)}
             />
+            {formErrors.descricao && (
+              <Text style={styles.errorText}>{formErrors.descricao}</Text>
+            )}
+            <Text style={styles.modelText}>Preço</Text>
             <TextInput
               style={styles.input}
               placeholder="Preço"
               returnKeyType="done"
               value={editedJogo.preco.toString()}
-              onChangeText={(text) =>
-                handleInputChange("preco", parseFloat(text))
-              }
+              onChangeText={(text) => handleInputChange("preco", text)}
             />
+            {formErrors.preco && (
+              <Text style={styles.errorText}>{formErrors.preco}</Text>
+            )}
+            <Text style={styles.modelText}>Avaliação</Text>
             <TextInput
               style={styles.input}
               placeholder="Avaliação"
               returnKeyType="done"
               value={editedJogo.avaliacao.toString()}
-              onChangeText={(text) =>
-                handleInputChange("avaliacao", parseFloat(text))
-              }
+              onChangeText={(text) => handleInputChange("avaliacao", text)}
             />
+            {formErrors.avaliacao && (
+              <Text style={styles.errorText}>{formErrors.avaliacao}</Text>
+            )}
             <View style={styles.modalButtonsContainer}>
               <TouchableOpacity style={styles.modalButton} onPress={closeModal}>
                 <Text style={styles.modalButtonText}>Cancelar</Text>
@@ -224,12 +270,6 @@ export default function Gerenciamento() {
           </View>
         </View>
       </Modal>
-
-      <Jogo
-        jogo={selectedJogo}
-        visible={modalVisible}
-        closeModal={closeModal}
-      />
     </View>
   );
 }
@@ -239,12 +279,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#1F1F24",
     padding: 16,
-  },
-  header: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#fff",
-    marginBottom: 16,
+    alignItems: "center",
   },
   item: {
     backgroundColor: "#36363A",
@@ -259,6 +294,10 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 16,
     marginLeft: 10,
+  },
+  modelText: {
+    color: "#fff",
+    fontSize: 16,
   },
   itemImage: {
     width: 80,
@@ -298,6 +337,10 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginTop: 20,
   },
+  header: {
+    width: 150,
+    height: 100,
+  },
   modalButton: {
     backgroundColor: "#3498db",
     padding: 10,
@@ -327,5 +370,9 @@ const styles = StyleSheet.create({
   addButtonText: {
     color: "#fff",
     fontSize: 16,
+  },
+  errorText: {
+    color: "#e74c3c",
+    marginBottom: 10,
   },
 });
