@@ -1,12 +1,13 @@
 import { NavigationContainer } from "@react-navigation/native";
-
+import AuthProvider from "./src/contexts/auth";
 import RoutesStack from "./src/routes/StackNavigator";
-import { StatusBar } from "expo-status-bar";
 
 export default function App() {
   return (
     <NavigationContainer>
-      <RoutesStack />
+      <AuthProvider>
+        <RoutesStack />
+      </AuthProvider>
     </NavigationContainer>
   );
 }

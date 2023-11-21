@@ -300,7 +300,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   itemImage: {
-    width: 80,
+    width: 170,
     height: 80,
     borderRadius: 5,
   },

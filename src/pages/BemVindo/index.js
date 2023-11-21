@@ -1,57 +1,80 @@
-import { View, Text, StyleSheet, Image, ImageBackground } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  ImageBackground,
+  TouchableOpacity,
+} from "react-native";
 import logo from "../../../assets/logo.png";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
+import * as Animatable from "react-native-animatable";
 
 export default function BemVindo() {
-    const navigation = useNavigation()
+  const navigation = useNavigation();
   return (
-    <ImageBackground source={require('../../../assets/background.gif')} style={styles.container}>
+    <ImageBackground
+      source={require("../../../assets/background.gif")}
+      style={styles.container}
+    >
       <View style={styles.containerLogo}>
-        <Image source={logo} style={styles.imagem} />
+        <Animatable.Image
+          animation="flipInY"
+          source={logo}
+          style={styles.imagem}
+        />
       </View>
-      <View style={styles.containerForm}>
-        <Text style={styles.slogan}>Bem Vindo ao Game Hub: Onde a Diversão Começa e a Aventura Não Tem Limites!</Text>
+      <Animatable.View
+        delay={600}
+        style={styles.containerForm}
+        animation="fadeInUp"
+      >
+        <Text style={styles.slogan} animation="fadeInUp">
+          Bem Vindo ao Game Hub: Onde a Diversão Começa e a Aventura Não Tem
+          Limites!
+        </Text>
         <Text style={styles.texto}>Faça o Login para começar:</Text>
-        <TouchableOpacity onPress={()=> navigation.navigate("Login")}>
-          <Text style={styles.botao}>Acessar</Text>
+        <TouchableOpacity
+          style={styles.botao}
+          onPress={() => navigation.navigate("Login")}
+        >
+          <Text style={styles.botaoTexto}>Acessar</Text>
         </TouchableOpacity>
-      </View>
+      </Animatable.View>
     </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
-    background:{
-height:"100%"
-    },
+  background: {
+    height: "100%",
+  },
   container: {
     flex: 1,
-    resizeMode: 'center',
-    
+    resizeMode: "center",
   },
   containerLogo: {
     flex: 3,
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
   },
-  containerForm:{
+  containerForm: {
     flex: 2,
     backgroundColor: "#1f1f24d7",
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
-    padding: "10px"
+    padding: 10,
   },
   texto: {
     fontSize: 20,
     color: "#f2f2f2",
-    marginBottom: 30
+    marginBottom: 30,
   },
-  slogan:{
+  slogan: {
     fontSize: 26,
-    fontWeight: 500,
+    fontWeight: "500",
     color: "#f2f2f2",
-    marginVertical: 15
+    marginVertical: 15,
   },
   imagem: {
     width: 250,
@@ -60,9 +83,11 @@ height:"100%"
   botao: {
     borderRadius: 10,
     backgroundColor: "#088DBC",
-    color: "#f2f2f2",
     padding: 10,
+  },
+  botaoTexto: {
     fontSize: 20,
+    color: "#f2f2f2",
     textAlign: "center",
-  }
+  },
 });

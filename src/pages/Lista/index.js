@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     margin: 4,
     width: windowWidth / 2 - 12,
-    height: 150,
+    height: 80,
   },
   itemImage: {
     width: "100%",

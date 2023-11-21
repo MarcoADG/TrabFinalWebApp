@@ -70,8 +70,13 @@ export default function Sobre() {
         <Image source={logo} style={styles.header} />
         <Text style={styles.pixeltext}>SOBRE</Text>
         <Text style={styles.texto}>
-          Lorem ipsum texto texto sei la mais texto lorem ipsum dolor sit amet
-          sei la oq sei oq la domingo a noite lorem ipsum dolor sit amet.
+          Os visionários fundadores da Game Hub, apaixonados pelo universo dos
+          jogos, uniram suas mentes criativas para criar uma experiência única
+          de compra. Com determinação e expertise, eles transformaram a Game Hub
+          em um destacado e-commerce de jogos. Inspirados pela inovação e
+          dedicação aos gamers, esses líderes comprometidos criaram um espaço
+          onde a paixão pelos jogos se encontra com a excelência em oferecer as
+          melhores opções para a comunidade gamer.
         </Text>
         <Text style={styles.pixeltext}>Nossos Fundadores</Text>
       </View>
