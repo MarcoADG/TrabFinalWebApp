@@ -6,6 +6,14 @@ import NetInfo from "@react-native-community/netinfo";
 import { Alert } from "react-native";
 
 export default function App() {
+     useEffect(() => {
+         const splashTimeout = setTimeout(() => {
+        navigation.navigate('Gerenciamento');
+   }, 3000); // Tempo em milissegundos (3 segundos neste exemplo)
+
+    return () => clearTimeout(splashTimeout); // Limpar o timeout ao desmontar o componente
+  }, []);
+  
   const [isConnected, setIsConnected] = useState(true);
 
   // Efeito colateral para escutar as alterações na conexão à internet
