@@ -8,10 +8,35 @@ import {
 } from "react-native";
 import logo from "../../../assets/logo.png";
 import { useNavigation } from "@react-navigation/native";
+import React, { useEffect, useState } from "react";
 import * as Animatable from "react-native-animatable";
+import NetInfo from "@react-native-community/netinfo";
+import { Alert } from "react-native";
 
 export default function BemVindo() {
   const navigation = useNavigation();
+
+  const [isConnected, setIsConnected] = useState(true);
+
+  // Efeito colateral para escutar as alterações na conexão à internet
+  useEffect(() => {
+    // Adiciona um ouvinte para atualizações de conexão
+    const unsubscribe = NetInfo.addEventListener((state) => {
+      // Atualiza o estado com o status atual da conexão
+      setIsConnected(state.isConnected);
+
+      if (isConnected == false) {
+        Alert.alert("Sem conexão com a internet!");
+      }
+    });
+
+    // Função de limpeza que será executada quando o componente for desmontado
+    return () => {
+      // Remove o ouvinte para evitar vazamentos de memória.  Usubscribe é uma palavra usada em React para se referir à função de limpeza no useEffect.
+      unsubscribe();
+    };
+  }, []);
+
   return (
     <ImageBackground
       source={require("../../../assets/background.gif")}
