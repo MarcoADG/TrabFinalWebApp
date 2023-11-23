@@ -47,6 +47,22 @@ export default function Sobre() {
     fetchData();
   }, []);
 
+  const renderHeader = () => (
+    <View style={styles.caixasTexto}>
+      <Text style={styles.pixeltext}>SOBRE</Text>
+      <Text style={styles.texto}>
+        Os visionários fundadores da Game Hub, apaixonados pelo universo dos
+        jogos, uniram suas mentes criativas para criar uma experiência única de
+        compra. Com determinação e expertise, eles transformaram a Game Hub em
+        um destacado e-commerce de jogos. Inspirados pela inovação e dedicação
+        aos gamers, esses líderes comprometidos criaram um espaço onde a paixão
+        pelos jogos se encontra com a excelência em oferecer as melhores opções
+        para a comunidade gamer.
+      </Text>
+      <Text style={styles.pixeltext}>Nossos Fundadores</Text>
+    </View>
+  );
+
   const renderItem = ({ item }) => (
     <View style={styles.item}>
       <View style={styles.itemContent}>
@@ -68,22 +84,12 @@ export default function Sobre() {
     <View style={styles.container}>
       <View style={styles.caixasTexto}>
         <Image source={logo} style={styles.header} />
-        <Text style={styles.pixeltext}>SOBRE</Text>
-        <Text style={styles.texto}>
-          Os visionários fundadores da Game Hub, apaixonados pelo universo dos
-          jogos, uniram suas mentes criativas para criar uma experiência única
-          de compra. Com determinação e expertise, eles transformaram a Game Hub
-          em um destacado e-commerce de jogos. Inspirados pela inovação e
-          dedicação aos gamers, esses líderes comprometidos criaram um espaço
-          onde a paixão pelos jogos se encontra com a excelência em oferecer as
-          melhores opções para a comunidade gamer.
-        </Text>
-        <Text style={styles.pixeltext}>Nossos Fundadores</Text>
       </View>
       <FlatList
         data={usersData}
         keyExtractor={(item) => item.id.toString()}
         renderItem={renderItem}
+        ListHeaderComponent={renderHeader}
       />
     </View>
   );
@@ -93,6 +99,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#1F1F24",
+    padding: 12,
   },
   caixasTexto: {
     alignItems: "center",
@@ -104,9 +111,12 @@ const styles = StyleSheet.create({
   pixeltext: {
     color: "#088DBC",
     fontSize: 20,
+    marginVertical: 10,
   },
   texto: {
     color: "white",
+    fontSize: 16,
+    textAlign: "center",
   },
   texto2: {
     color: "white",

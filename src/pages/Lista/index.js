@@ -6,11 +6,12 @@ import {
   StyleSheet,
   Dimensions,
   TouchableOpacity,
+  RefreshControl,
+  ActivityIndicator,
 } from "react-native";
 import axios from "axios";
 import Jogo from "../Jogo"; // Importe a página Jogo
 import logo from "../../../assets/logo.png";
-import Feather from "react-native-vector-icons/Feather";
 
 const windowWidth = Dimensions.get("window").width;
 
@@ -19,10 +20,12 @@ export default function Lista() {
   const [jogos, setJogos] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedJogo, setSelectedJogo] = useState(null);
+  const [refreshing, setRefreshing] = useState(true);
 
   const getJogos = async () => {
     try {
       const { data } = await axios.get(url);
+      setRefreshing(false);
       setJogos(data);
     } catch (error) {
       console.error("Erro ao obter jogos:", error);
@@ -53,14 +56,15 @@ export default function Lista() {
   return (
     <View style={styles.container}>
       <Image source={logo} style={styles.header} />
-      <TouchableOpacity onPress={getJogos}>
-        <Feather name="refresh-ccw" color={"white"} size={30} />
-      </TouchableOpacity>
+      {refreshing ? <ActivityIndicator /> : null}
       <FlatList
         data={jogos}
         keyExtractor={(item) => item.id.toString()}
         renderItem={renderItem}
         numColumns={2}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={getJogos} />
+        }
       />
 
       <Jogo

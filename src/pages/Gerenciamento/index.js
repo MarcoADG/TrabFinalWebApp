@@ -280,6 +280,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#1F1F24",
     padding: 16,
     alignItems: "center",
+    paddingTop: 20,
   },
   item: {
     backgroundColor: "#36363A",
