@@ -176,7 +176,7 @@ export default function Gerenciamento() {
   const handleInputChange = (field, value) => {
     setEditedJogo((prevJogo) => ({
       ...prevJogo,
-      [field]: isNaN(value) ? "" : value,
+      [field]: isNaN(value) ? value : value,
     }));
   };
 
@@ -211,7 +211,7 @@ export default function Gerenciamento() {
             <TextInput
               style={styles.input}
               placeholder="Categoria"
-              value={editedJogo.categoria}
+              value={editedJogo.categoria.toString()}
               onChangeText={(text) => handleInputChange("categoria", text)}
             />
             {formErrors.categoria && (
@@ -221,14 +221,14 @@ export default function Gerenciamento() {
             <TextInput
               style={styles.input}
               placeholder="Imagem (URL)"
-              value={editedJogo.imagem}
+              value={editedJogo.imagem.toString()}
               onChangeText={(text) => handleInputChange("imagem", text)}
             />
             <Text style={styles.modelText}>Descrição</Text>
             <TextInput
               style={styles.input}
               placeholder="Descrição"
-              value={editedJogo.descricao}
+              value={editedJogo.descricao.toString()}
               onChangeText={(text) => handleInputChange("descricao", text)}
             />
             {formErrors.descricao && (
